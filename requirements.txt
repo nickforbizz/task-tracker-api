@@ -1,0 +1,6 @@
+fastapi[all] 
+pymysql 
+databases 
+python-dotenv 
+google-auth 
+google-auth-oauthlib
