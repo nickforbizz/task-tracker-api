@@ -22,7 +22,6 @@ async def get_events(skip: int = 0, limit: int = 10, db: Session = Depends(get_d
 @routers.get('/event/{event_id}', status_code=status.HTTP_200_OK ,tags=['Events'])
 async def get_event(event_id: int, q: Union[str, None] = None, db: Session = Depends(get_db)):
     event = db.query(models.Event).filter(models.Event.id == event_id).first()
-    
     if event is None:
         raise HTTPException(status_code=404, detail="Event not found")
     
@@ -30,9 +29,14 @@ async def get_event(event_id: int, q: Union[str, None] = None, db: Session = Dep
 
 @routers.post('/event', status_code=status.HTTP_201_CREATED ,tags=['Events'])
 async def createEvent(event: EventBase, db: Session=Depends(get_db)):
-    event = models.Event(**event.model_dump())
-    db.add(event)
+    db_user = db.query(models.User).filter(models.User.id == event.fk_user).first()
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    db_event = models.Event(**event.model_dump())
+    db.add(db_event)
     db.commit()
+    db.refresh(db_event)
     return event
 
 #function to update event
