@@ -29,7 +29,7 @@ async def get_user(user_id: int, q: Union[str, None] = None, db: Session = Depen
     return user
 
 @routers.post('/user', status_code=status.HTTP_201_CREATED ,tags=['Users'])
-async def createUser(user: UserBase, db: Session=Depends(get_db)):
+async def create_user(user: UserBase, db: Session=Depends(get_db)):
     user = models.User(**user.model_dump())
     db.add(user)
     db.commit()
@@ -60,3 +60,7 @@ async def delete_user(user_id: int, db: Session = Depends(get_db)):
 
     # Return None with status_code=204 (No Content)
     return None  
+
+async def get_user_by_email(db: Session, email: str):
+    user = db.query(models.User).filter(models.User.email == email).first()  
+    return user
