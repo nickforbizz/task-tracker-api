@@ -2,6 +2,7 @@ from fastapi import FastAPI, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 import requests, os
 import src.models as models
+from src.model_validators import UserBase
 from src.dependencies import get_db 
 from src.routers.UserController import get_user_by_email, create_user
 from .routers import UserController, EventController
@@ -47,8 +48,8 @@ async def authenticate_user(code: str, db: Session = Depends(get_db)):
             'email': user_info["email"],
             'active': True  
         }
-        user = await create_user(user=models.User(**user_data),db=db)
-    return {"user": user}
+        user = await create_user(user=UserBase(**user_data),db=db)
+    return {"user": user_data}
 
 
 @app.get('/home', tags=['ROOT'])

@@ -6,6 +6,7 @@ from src.models import User
 
 class UserBase(BaseModel):
     username: str
+    email: str
     active: bool
 
 class EventBase(BaseModel):
