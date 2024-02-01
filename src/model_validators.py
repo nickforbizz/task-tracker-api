@@ -13,4 +13,5 @@ class EventBase(BaseModel):
     title: str
     description: str
     fk_user: PositiveInt
+    due_date: str
 

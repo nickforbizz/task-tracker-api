@@ -55,8 +55,3 @@ async def authenticate_user(code: str, db: Session = Depends(get_db)):
 @app.get('/home', tags=['ROOT'])
 def root() -> dict:
     return {'msg': 'Welcome '}
-
-@app.get('/events', status_code=status.HTTP_200_OK, tags=['Events'])
-async def get_events(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    events = db.query(models.Event).offset(skip).limit(limit).all()
-    return events
