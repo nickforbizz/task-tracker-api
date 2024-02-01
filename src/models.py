@@ -20,6 +20,7 @@ class Event(Base):
     title = Column(String, index=True)
     description = Column(String, index=True)
     fk_user = Column(Integer, ForeignKey('users.id'))
+    due_date = Column(String, index=True) 
     active = Column(Boolean, default=True)
 
     user = relationship("User")
